@@ -1,6 +1,7 @@
 from playwright.sync_api import sync_playwright
 import time
 from bs4 import BeautifulSoup
+import csv
 
 # Playwright 
 p = sync_playwright().start()
@@ -10,31 +11,31 @@ browser = p.chromium.launch(headless=False)
 page = browser.new_page()
 
 # 페이지 열기
-page.goto("https://www.wanted.co.kr")
+page.goto("https://www.wanted.co.kr/search?query=flutter&tab=position")
 
-time.sleep(5)
+# time.sleep(5)
 
 # 특정 요소 클릭
 # Element : Button
 # Class Name : Aside_searchButton_rajGo
-page.click("button.Aside_searchButton__rajGo")
+# page.click("button.Aside_searchButton__rajGo")
 
-time.sleep(5)
+# time.sleep(5)
 
-# 입력 필드의 placeholder 속성 값을 받아 온 다음 "flutter" 입력
-page.get_by_placeholder("검색어를 입력해 주세요.").fill("flutter")
+# # 입력 필드의 placeholder 속성 값을 받아 온 다음 "flutter" 입력
+# page.get_by_placeholder("검색어를 입력해 주세요.").fill("flutter")
 
-time.sleep(5)
+# time.sleep(5)
 
-# Enter 키 누르는 동작
-page.keyboard.down("Enter")
+# # Enter 키 누르는 동작
+# page.keyboard.down("Enter")
 
-time.sleep(10)
+# time.sleep(10)
 
-# 특정 요소 클릭
-# Element : Anchor
-# Id : search_tab_position
-page.click("a#search_tab_position")
+# # 특정 요소 클릭
+# # Element : Anchor
+# # Id : search_tab_position
+# page.click("a#search_tab_position")
 
 # 페이지 스크롤 내리기
 for x in range(3):
@@ -78,3 +79,20 @@ for job in jobs:
 
 print(jobs_db)
 print(len(jobs_db))
+
+# CSV : Comma Separated Values
+# open() : 파일 열어주는 함수. 만약 파일이 존재하지 않으면 파일을 생성해준다.
+# "w" : write
+file = open("jobs.csv", "w")
+writer = csv.writer(file)
+writer.writerow(
+    [
+        "Title", 
+        "Company", 
+        "Reward", 
+        ㅌ"Link"
+    ]
+)
+
+for job in jobs_db:
+    writer.writerow(job.values())
